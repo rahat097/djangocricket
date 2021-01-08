@@ -4,6 +4,19 @@ from . models import Cricket
 from .forms import Cricketrun
 
 
+def crickethome(request):
+
+
+	message = 'lol'
+	context = {
+	
+	'message' : message
+	}
+
+
+	return render(request, 'crickethomepage.html',context)
+
+
 def cricketgame(request,pk):
 	game = Cricket.objects.get(pk=pk)
 	if game.user1out == False:

@@ -1,13 +1,13 @@
 from django.urls import path
 #from . import views
-from . views import cricketgame
+from . views import cricketgame,crickethome
 
 
 
 urlpatterns = [
-    #path('', views.home, name='home'),
+    path('', crickethome, name='crickethome'),
     #path('allpost/', AllPostView, name='allpost'),
-    path('cricket/<int:pk>', cricketgame, name='cricketgame'),
+    path('<int:pk>', cricketgame, name='cricketgame'),
 
 
 

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+    {% block title %}
+
+    My Blog
+
+    {% endblock %}
+
+
+
+{% block content %}
+<h6>Cricket Game Between {{ game.user1 }} and {{ game.user2 }}</h6><hr>
+{% if game.gameend %} <p>Game Ended {{ game.user1 }}-{{ game.user1run }} run || {{ game.user2 }}-{{ game.user2run }} run | {{ game.gameresult }}</p>
+{% else %}
+{% if game.user1out == False %}
+<p>{{ game.user1 }} run {{ game.user1run }} | {% if game.user1out %} {{ game.user1 }} Out {% endif %} </p><hr>
+{% if not game.user2hit > game.user1hit and  request.user == game.user2 %}
+<p>Ball Please</p>
+<form class="form-signin" method="POST" action="{% url 'cricketgame' game.id %}">
+            {% csrf_token %}
+          {{ form.hit }}<br>
+
+        <button class="btn  btn-primary btn-block btn-sm" type="submit">Submit</button>
+      </form>
+ {% else %}
+ {% if request.user == game.user2 %}
+ <p>Wait for the Bat</p>
+ {% endif %}
+{% endif %}
+{% if game.user2hit > game.user1hit and request.user == game.user1 %}
+<p>Bat Please</p>
+<form class="form-signin" method="POST" action="{% url 'cricketgame' game.id %}">
+            {% csrf_token %}
+          {{ form.hit }}<br>
+
+        <button class="btn  btn-primary btn-block btn-sm" type="submit">Submit</button>
+      </form>
+{% else %}
+{% if request.user == game.user1 %}
+Wait for Ball
+{% endif %}
+{% endif %}
+{% endif %}
+{% if game.user1out %}
+<p> {{ game.user2 }} Batting | Target: {{ targetrun}} </p>
+<p>{{ game.user1 }} run {{ game.user1run }} | {% if game.user1out %} {{ game.user1 }} Out {% endif %} </p><hr>
+<p>{{ game.user2 }} run {{ game.user2run }} | {% if game.user2out %} {{ game.user2 }} Out {% endif %} </p><hr>
+
+{% if not game.user1hit > game.user2hit and  request.user == game.user1 %}
+<p>Ball Please</p>
+<form class="form-signin" method="POST" action="{% url 'cricketgame' game.id %}">
+            {% csrf_token %}
+          {{ form.hit }}<br>
+
+        <button class="btn  btn-primary btn-block btn-sm" type="submit">Submit</button>
+      </form>
+ {% else %}
+ {% if request.user == game.user1 %}
+ <p>Wait for the Bat</p>
+ {% endif %}
+{% endif %}
+{% if game.user1hit > game.user2hit and request.user == game.user2 %}
+<form class="form-signin" method="POST" action="{% url 'cricketgame' game.id %}">
+            {% csrf_token %}
+          {{ form.hit }}<br>
+
+        <button class="btn  btn-primary btn-block btn-sm" type="submit">Submit</button>
+      </form>
+{% else %}
+{% if request.user == game.user2 %}
+Wait for Ball
+{% endif %}
+{% endif %}
+{% endif %}
+{% endif %}
+
+
+<br>
+
+
+
+
+
+
+
+
+
+{% endblock %}

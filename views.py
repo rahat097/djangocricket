@@ -1,16 +1,55 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
-from . models import Cricket
-from .forms import Cricketrun
+from . models import Cricket,CricketChallenge
+from .forms import Cricketrun,Usernameform
+
+
+
+def cricketdelete(request,id):
+	challenge = CricketChallenge.objects.get(id = id)
+	challenge.delete()
+	return redirect('crickethome')
+
+
+
+
+def cricketaccept(request,id):
+	challenge = CricketChallenge.objects.get(id = id)
+	cricketgame = Cricket(user1=challenge.reciever, user2=challenge.sender)
+	cricketgame.save()
+	challenge.delete()
+	return redirect('crickethome')
+
 
 
 def crickethome(request):
+	if request.method == 'POST':
+		form = Usernameform(request.POST)
+
+		if form.is_valid():
+			username = request.POST['username']
+			user = User.objects.get(username = username)
+			cricketchallenge = CricketChallenge(sender=request.user, reciever=user)
+			cricketchallenge.save()
+
+	else:
+		form = Usernameform()
+
+
+	user = User.objects.get(username=request.user.username)
+	allgame = Cricket.objects.all().filter(user1 = user).order_by('-id')
+	allgame2 = Cricket.objects.all().filter(user2 = user).order_by('-id')
+	allchallenge = CricketChallenge.objects.all().filter( reciever = user).order_by('-id')
 
 
 	message = 'lol'
 	context = {
 	
-	'message' : message
+	'message' : message,
+	'form' : form,
+	'allchallenge' : allchallenge,
+	'allgame' : allgame,
+	'allgame2' : allgame2,
 	}
 
 

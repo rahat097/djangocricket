@@ -7,9 +7,33 @@
 {% endblock %}
 
 {% block content %}
+<h4 class="text-center">Cricket Game</h4>
 
 
-<p>Hello</p>
+
+<form class="form-signin" method="POST" action="{% url 'crickethome' %}">
+            {% csrf_token %}
+          {{ form.username }}<br>
+
+        <button class="btn  btn-primary btn-block btn-sm" type="submit">Challenge</button>
+</form>
+<hr>
+<p class="text-center">Current Matches</p><hr>
+{% for item in  allgame %}
+
+ <p>{{ item.user1}} vs {{ item.user2 }} | <a href="{% url 'cricketgame' item.id %}">Play</a></p>
+{% endfor %}
+{% for item in  allgame2 %}
+
+ <p>{{ item.user1}} vs {{ item.user2 }} | <a href="{% url 'cricketgame' item.id %}">Play</a></p>
+{% endfor %}
+<hr>
+
+<p class="text-center">All Challenge</p><hr>
+{% for item in  allchallenge %}
+
+ </p>{{ item.sender }} |   <a href="{% url 'cricketaccept' item.id %}">Accept</a> | <a href="{% url 'cricketdelete' item.id %}">Delete</a>  </p>
+{% endfor %}
 
 
 

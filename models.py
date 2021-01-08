@@ -26,3 +26,10 @@ class Cricket(models.Model):
 
 	def __str__(self):
 		return str(self.id)+'  ' + str(self.user1.username) +'  '+ str(self.user2.username)
+
+
+class CricketChallenge(models.Model):
+	sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
+	reciever = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reciever')
+	def __str__(self):
+		return str(self.id) + '  ' + str(self.sender) + ' to ' + str(self.reciever)
